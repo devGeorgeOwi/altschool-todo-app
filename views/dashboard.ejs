@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .navbar { box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+<!-- Stats Cards -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card stat-card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle mb-2">Total Tasks</h6>
+                        <h2 class="mb-0"><%= stats.total || 0 %></h2>
+                    </div>
+                    <i class="bi bi-list-task display-6 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card bg-warning text-dark">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle mb-2">Pending</h6>
+                        <h2 class="mb-0"><%= stats.pending || 0 %></h2>
+                    </div>
+                    <i class="bi bi-clock display-6 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle mb-2">Completed</h6>
+                        <h2 class="mb-0"><%= stats.completed || 0 %></h2>
+                    </div>
+                    <i class="bi bi-check-circle display-6 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Task List Column -->
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="bi bi-list-check me-2"></i>
+                    My Tasks
+                </h5>
+                
+                <!-- Filter Buttons -->
+                <div class="btn-group" role="group">
+                    <a href="/dashboard?filter=all" 
+                       class="btn <%= filter === 'all' ? 'btn-primary' : 'btn-outline-primary' %> btn-sm">
+                        All
+                    </a>
+                    <a href="/dashboard?filter=pending" 
+                       class="btn <%= filter === 'pending' ? 'btn-warning' : 'btn-outline-warning' %> btn-sm">
+                        Pending
+                    </a>
+                    <a href="/dashboard?filter=completed" 
+                       class="btn <%= filter === 'completed' ? 'btn-success' : 'btn-outline-success' %> btn-sm">
+                        Completed
+                    </a>
+                    <a href="/dashboard?filter=deleted" 
+                       class="btn <%= filter === 'deleted' ? 'btn-danger' : 'btn-outline-danger' %> btn-sm">
+                        Deleted
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <% if (tasks && tasks.length > 0) { %>
+                    <div class="list-group">
+                        <% tasks.forEach(task => { %>
+                            <div class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between align-items-start">
+                                    <div class="flex-grow-1 me-3">
+                                        <!-- Task Status Indicator -->
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input task-status-toggle" 
+                                                   type="checkbox" 
+                                                   <%= task.status === 'completed' ? 'checked' : '' %>
+                                                   data-task-id="<%= task._id %>"
+                                                   id="task-<%= task._id %>">
+                                            <label class="form-check-label" for="task-<%= task._id %>"></label>
+                                        </div>
+                                        
+                                        <!-- Task Title -->
+                                        <h6 class="mb-1 <%= task.status === 'completed' ? 'text-decoration-line-through text-muted' : '' %>">
+                                            <%= task.title %>
+                                            
+                                            <!-- Priority Badge -->
+                                            <% if (task.priority === 'high') { %>
+                                                <span class="badge bg-danger ms-2">High</span>
+                                            <% } else if (task.priority === 'medium') { %>
+                                                <span class="badge bg-warning ms-2">Medium</span>
+                                            <% } else { %>
+                                                <span class="badge bg-secondary ms-2">Low</span>
+                                            <% } %>
+                                        </h6>
+                                        
+                                        <!-- Task Description -->
+                                        <% if (task.description) { %>
+                                            <p class="mb-2 text-muted small">
+                                                <%= task.description.length > 100 ? task.description.substring(0, 100) + '...' : task.description %>
+                                            </p>
+                                        <% } %>
+                                        
+                                        <!-- Task Meta -->
+                                        <small class="text-muted">
+                                            <i class="bi bi-calendar me-1"></i>
+                                            <%= new Date(task.createdAt).toLocaleDateString('en-US', { 
+                                                weekday: 'short', 
+                                                year: 'numeric', 
+                                                month: 'short', 
+                                                day: 'numeric' 
+                                            }) %>
+                                        </small>
+                                    </div>
+                                    
+                                    <!-- Action Buttons -->
+                                    <div class="btn-group btn-group-sm">
+                                        <% if (task.status !== 'deleted') { %>
+                                            <a href="/tasks/<%= task._id %>/edit" 
+                                               class="btn btn-outline-primary"
+                                               title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                        <% } %>
+                                        
+                                        <!-- Delete/Restore Button -->
+                                        <% if (task.status !== 'deleted') { %>
+                                            <button class="btn btn-outline-danger delete-task"
+                                                    data-task-id="<%= task._id %>"
+                                                    title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        <% } else { %>
+                                            <button class="btn btn-outline-success restore-task"
+                                                    data-task-id="<%= task._id %>"
+                                                    title="Restore">
+                                                <i class="bi bi-arrow-counterclockwise"></i>
+                                            </button>
+                                            <form action="/tasks/<%= task._id %>/delete" 
+                                                  method="POST" 
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('Permanently delete this task?')">
+                                                <button type="submit" 
+                                                        class="btn btn-outline-danger"
+                                                        title="Permanent Delete">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </button>
+                                            </form>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <div class="text-center py-5">
+                        <i class="bi bi-inbox display-1 text-muted mb-3"></i>
+                        <h5 class="text-muted">No tasks found</h5>
+                        <p class="text-muted">
+                            <% if (filter === 'all' || filter === 'pending' || filter === 'completed') { %>
+                                Start by adding your first task!
+                            <% } else if (filter === 'deleted') { %>
+                                No deleted tasks
+                            <% } %>
+                        </p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Task Column -->
+    <div class="col-lg-4">
+        <div class="card shadow sticky-top" style="top: 20px;">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Add New Task
+                </h5>
+            </div>
+            <div class="card-body">
+                <form action="/tasks" method="POST" id="taskForm">
+                    <div class="mb-3">
+                        <label class="form-label">Title *</label>
+                        <input type="text" 
+                               name="title" 
+                               class="form-control" 
+                               placeholder="What needs to be done?"
+                               required
+                               maxlength="200">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Description (Optional)</label>
+                        <textarea name="description" 
+                                  class="form-control" 
+                                  rows="3"
+                                  placeholder="Add details..."
+                                  maxlength="1000"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Priority</label>
+                        <select name="priority" class="form-select">
+                            <option value="low">Low Priority</option>
+                            <option value="medium" selected>Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="bi bi-plus-circle me-2"></i>
+                        Add Task
+                    </button>
+                </form>
+                
+                <!-- Quick Tips -->
+                <div class="mt-4 pt-3 border-top">
+                    <h6 class="text-muted">
+                        <i class="bi bi-lightbulb me-2"></i>
+                        Quick Tips
+                    </h6>
+                    <ul class="small text-muted mb-0">
+                        <li>Click checkbox to mark complete</li>
+                        <li>Use priority to organize tasks</li>
+                        <li>Deleted tasks go to trash for 30 days</li>
+                        <li>Edit tasks to update details</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/app.js"></script>
+
+</body>
+</html>
