@@ -5,6 +5,15 @@ const path = require('path');
 const morgan = require('morgan');
 require('dotenv').config();
 
+console.log('🔍 Checking environment variables:');
+console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI);
+console.log('SESSION_SECRET exists:', !!process.env.SESSION_SECRET);
+
+if (!process.env.MONGODB_URI) {
+  console.error('❌ FATAL: MONGODB_URI is missing!');
+  process.exit(1);
+}
+
 // Import routes
 const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
