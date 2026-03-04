@@ -186,9 +186,6 @@ Postman for:
 -   Task creation (POST)
 -   Status updates
 
-(Optional) Add your Postman collection link here: \[Insert Postman
-Collection Link\]
-
 ------------------------------------------------------------------------
 
 ## ✅ AltSchool Requirement Alignment
