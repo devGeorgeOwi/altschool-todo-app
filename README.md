@@ -32,7 +32,7 @@ requirements and follows clean, modular coding standards.
 
 ## 🚀 Live Deployment
 
-Live URL: https://your-app-name.onrender.com\
+Live URL: https://altschool-todo-app-ha1p.onrender.com
 (Update with your deployed link)
 
 ------------------------------------------------------------------------
@@ -98,22 +98,22 @@ Session secret is stored securely in environment variables.
   ------ | -----------|-------------------
   GET    |  /login    |  Login page
   POST   |  /login    |  Authenticate user
-  GET      /register   Registration page
-  POST     /register   Create new user
-  GET      /logout     Logout user
+  GET    |  /register |  Registration page
+  POST   |  /register |  Create new user
+  GET    |  /logout   |  Logout user
 
 ------------------------------------------------------------------------
 
 ### Task Routes (Protected)
 
-  Method   Route               Description
+  Method |  Route            |  Description
   ------ | ------------------| -------------------------
-  GET      /dashboard          User dashboard
-  POST     /tasks              Create new task
-  POST     /tasks/:id/status   Update task status
-  GET      /tasks/:id/edit     Edit task form
-  POST     /tasks/:id/edit     Update task
-  POST     /tasks/:id/delete   Permanently delete task
+  GET    |  /dashboard       |   User dashboard
+  POST   |  /tasks           |   Create new task
+  POST   | /tasks/:id/status |   Update task status
+  GET    |  /tasks/:id/edit  |   Edit task form
+  POST   |  /tasks/:id/edit  |   Update task
+  POST   |  /tasks/:id/delete|   Permanently delete task
 
 ------------------------------------------------------------------------
 
@@ -153,12 +153,12 @@ Test Command:
 
 ## 🌍 Environment Variables
 
-  Variable         Required   Description
+  Variable      |   Required |  Description
   --------------| ---------- |---------------------------
-  PORT             Yes        Server port
-  MONGODB_URI      Yes        MongoDB connection string
-  SESSION_SECRET   Yes        Session encryption key
-  NODE_ENV         No         Environment type
+  PORT          |   Yes      |  Server port
+  MONGODB_URI   |   Yes      |   MongoDB connection string
+  SESSION_SECRET|   Yes      |  Session encryption key
+  NODE_ENV      |   No       |  Environment type
 
 ------------------------------------------------------------------------
 
