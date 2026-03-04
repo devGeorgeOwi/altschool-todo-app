@@ -95,7 +95,7 @@ Session secret is stored securely in environment variables.
 ### Authentication Routes
 
   Method   Route       Description
-  -------- ----------- -------------------
+  ------ | -----------|-------------------
   GET      /login      Login page
   POST     /login      Authenticate user
   GET      /register   Registration page
@@ -107,7 +107,7 @@ Session secret is stored securely in environment variables.
 ### Task Routes (Protected)
 
   Method   Route               Description
-  -------- ------------------- -------------------------
+  ------ | ------------------| -------------------------
   GET      /dashboard          User dashboard
   POST     /tasks              Create new task
   POST     /tasks/:id/status   Update task status
@@ -154,7 +154,7 @@ Test Command:
 ## 🌍 Environment Variables
 
   Variable         Required   Description
-  ---------------- ---------- ---------------------------
+  --------------| ---------- |---------------------------
   PORT             Yes        Server port
   MONGODB_URI      Yes        MongoDB connection string
   SESSION_SECRET   Yes        Session encryption key
