@@ -96,8 +96,8 @@ Session secret is stored securely in environment variables.
 
   Method |  Route     |  Description
   ------ | -----------|-------------------
-  GET      /login      Login page
-  POST     /login      Authenticate user
+  GET    |  /login    |  Login page
+  POST   |  /login    |  Authenticate user
   GET      /register   Registration page
   POST     /register   Create new user
   GET      /logout     Logout user
